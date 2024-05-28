@@ -35,14 +35,8 @@ class PhotoGalleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://www.flickr.com/")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
-        val flickrApi: FlickrApi = retrofit.create()
-
         viewLifecycleOwner.lifecycleScope.launch {
-            val response = flickrApi.fetchContents()
+            val response = PhotoRepository().fetchContents()
             Log.d(TAG, response)
         }
     }
