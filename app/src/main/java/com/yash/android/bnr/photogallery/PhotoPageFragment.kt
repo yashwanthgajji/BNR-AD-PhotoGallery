@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -45,6 +46,20 @@ class PhotoPageFragment: Fragment() {
                         parent.supportActionBar?.subtitle = title
                     }
                 }
+                requireActivity().onBackPressedDispatcher.addCallback(
+                    viewLifecycleOwner,
+                    object : OnBackPressedCallback(true) {
+                        override fun handleOnBackPressed() {
+                            if (canGoBack()) {
+                                goBack()
+                            } else {
+                                isEnabled = false
+                                requireActivity().onBackPressed()
+                            }
+                        }
+
+                    }
+                )
             }
         }
 

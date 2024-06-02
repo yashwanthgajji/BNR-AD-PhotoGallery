@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,9 +57,11 @@ class PhotoGalleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val parent = requireActivity() as AppCompatActivity
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoGalleryViewModel.uiState.collect { state ->
+                    parent.supportActionBar?.subtitle = state.query.ifEmpty { "" } + "images"
                     binding.photoGrid.adapter = PhotoViewAdapter(state.images) { photoPageUri ->
                         findNavController().navigate(
                             PhotoGalleryFragmentDirections.showPhoto(photoPageUri)
